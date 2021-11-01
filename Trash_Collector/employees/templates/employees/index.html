@@ -4,7 +4,15 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-    Hello Employee {{ logged_in_employee.name }}!
+    Hello Employee {{ logged_in_employee.name }}! Your working in Zone: {{ logged_in_employee.zip_code}}
+    {% if content_present == False %}
+      <h3>No Customers Today! Nice work!</h3>
+    {% else %}
+    {% for customer in customer_data %}
+        <li>Name: {{ customer.name }} </li>
+    {% endfor %}
+    {% endif %}
+    
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
