@@ -4,7 +4,8 @@
 
 {% block content %}
   {% if user.is_authenticated %}
-    Hello Employee {{ logged_in_employee.name }}! Your working in Zone: {{ logged_in_employee.zip_code}}
+    Hello Employee {{ logged_in_employee.name }}! Your working in Zone: {{ logged_in_employee.zip_code}} <br />
+    Todays date is {{ weekday }}, {{ today }}
     {% if content_present == False %}
       <h3>No Customers Today! Nice work!</h3>
     {% else %}
@@ -12,7 +13,28 @@
         <li>Name: {{ customer.name }} </li>
     {% endfor %}
     {% endif %}
-    
+    <br>
+    <br>
+    Weekly Pick Up's for Today: <br>
+    {% for customer in customer_data %}
+      {% if customer.weekly_pickup == weekday %}
+        <div>
+          <h2>Name: {{ customer.name }}</h2>
+          <p>Address: {{ customer.address}}</p>
+          <button type='button' >Confirm Pick Up</button>
+        </div>
+      {% endif %}
+    {% endfor %}
+    One time Pick Up's for Today: <br>
+    {% for customer in customer_data %}
+        {% if customer.one_time_pickup == today%}
+        <div>
+          <h2>Name: {{ customer.name }}</h2>
+          <p>Address: {{ customer.address}}</p>
+          <button type='button' >Confirm Pick Up</button>
+        </div>
+        {% endif %}
+    {% endfor %}
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
