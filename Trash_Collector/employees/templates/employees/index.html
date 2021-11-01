@@ -21,7 +21,7 @@
         <div>
           <h2>Name: {{ customer.name }}</h2>
           <p>Address: {{ customer.address}}</p>
-          <button type='button' >Confirm Pick Up</button>
+          <a href="{% url 'employees:confirm' customer.id %}">Confirm Pick Up</a>
         </div>
       {% endif %}
     {% endfor %}
@@ -31,7 +31,7 @@
         <div>
           <h2>Name: {{ customer.name }}</h2>
           <p>Address: {{ customer.address}}</p>
-          <button type='button' >Confirm Pick Up</button>
+          <a href="{% url 'employees:confirm' customer.id %}">Confirm Pick Up</a>
         </div>
         {% endif %}
     {% endfor %}
