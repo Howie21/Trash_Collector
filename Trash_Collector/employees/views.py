@@ -1,3 +1,4 @@
+from django.db.models.fields.related import ForeignKey
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
@@ -70,3 +71,15 @@ def edit_profile(request):
             'logged_in_employee': logged_in_employee
         }
         return render(request, 'employees/edit_profile.html', context)        
+
+@login_required
+def confirm(request, customer_id):
+    Customer = apps.get_model('customers.Customer')
+    customer_data = Customer.objects.get(pk= customer_id)
+    customer_data.date_of_last_pickup = date.today()
+    customer_data.balance = (customer_data.balance + 20)
+    customer_data.save()
+    return HttpResponseRedirect(reverse('employees:index'))
+    if request.method == "GET":
+        return render(request, 'employees:index')
+    
