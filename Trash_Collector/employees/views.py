@@ -17,16 +17,23 @@ from django.contrib.auth.decorators import login_required
 def index(request):
     # This line will get the Customer model from the other app, it can now be used to query the db for Customers
     Customer = apps.get_model('customers.Customer')
-    logged_in_employee = request.user
+    logged_in_user = request.user
+
     try:
         # This line will return the customer record of the logged-in user if one exists
-        logged_in_employee = Employee.objects.get(user=logged_in_employee)
-
+        logged_in_employee = Employee.objects.get(user=logged_in_user)
+        content_present = True
         today = date.today()
-        
+        customer_data = Customer.objects.filter(zip_code = logged_in_employee.zip_code)
+        if len(list(customer_data)) == 0:
+            content_present = False
+        # customer_data_plain = list(Customer.objects.all())
+        # customer_data = customer_data_plain.filter
         context = {
             'logged_in_employee': logged_in_employee,
-            'today': today
+            'today': today,
+            'customer_data': customer_data,
+            'content_present': content_present
         }
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
