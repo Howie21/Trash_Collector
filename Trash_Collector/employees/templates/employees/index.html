@@ -5,7 +5,7 @@
 {% block content %}
   {% if user.is_authenticated %}
     Hello Employee {{ logged_in_employee.name }}! Your working in Zone: {{ logged_in_employee.zip_code}} <br />
-    Todays date is {{ weekday }}, {{ today }}
+    Todays date is {{ weekday }}, {{ today }} <br>
     {% if content_present == False %}
       <h3>No Customers Today! Nice work!</h3>
     {% else %}
