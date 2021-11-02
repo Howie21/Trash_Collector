@@ -83,28 +83,27 @@ def confirm(request, customer_id):
     return HttpResponseRedirect(reverse('employees:index'))
     if request.method == "GET":
         return render(request, 'employees:index')
+ 
 @login_required
 def filter(request):
-    today = date.today()
-    context = {
-        'today': today
-    }
-    return render(request, 'employees:filter', context)
+    Customer = apps.get_model('customers.Customer')
+    logged_in_user = request.user
+    logged_in_employee = Employee.objects.get(user=logged_in_user)
+    customer_data = Customer.objects.filter(zip_code=logged_in_employee.zip_code)
+    weekdays = list(calendar.day_name)
+    weekday = weekdays[date.today().weekday()]
+    if request.method == 'POST':
+        weekday = request.POST.get('weekday')
+        context = {
+            'customer_data': customer_data,
+            'weekday': weekday
+        }
+        return render(request, 'employees/filter.html', context)
+    else:    
+        context = {
+            'customer_data': customer_data,
+            'weekday': weekday
+        }
+    return render(request, 'employees/filter.html', context)
 
-@login_required
-# def filterp(request, date_select):
-#     if request.method == "POST":
-#         Customer = apps.get_model('customers.Customer')    
-#         logged_in_user = request.user
-#         today = date.today()
-#         logged_in_employee = Employee.objects.get(user=logged_in_user)
-#         date_selected = date_select 
-#         customer_data = Customer.objects.filter(zip_code=logged_in_employee.zip_code, weekly_pick_up=date_selected)
-#         customer_data = Customer.objects.exclude(suspend_start__lt=date_selected, suspend_end__gte=date_selected)
-#         context = {
-#             'today': today,
-#             'date': date_selected,
-#             'customer_data': customer_data,
-#         }
-#         return HttpResponseRedirect(reverse(request, 'employees:filter', context))
 
