@@ -28,8 +28,8 @@ def index(request):
         content_present = True
         today = date.today()
         weekday = weekdays[date.today().weekday()]
-        customer_data = Customer.objects.filter(zip_code = logged_in_employee.zip_code)
-        # current_day_pickup = Customer.objects.filter(weekly_pickup = today)
+        customer_data = Customer.objects.filter(zip_code=logged_in_employee.zip_code)
+        customer_data = customer_data.exclude(suspend_start__lt=today, suspend_end__gte=today) 
         if len(list(customer_data)) == 0:
             content_present = False
         context = {
@@ -78,8 +78,9 @@ def confirm(request, customer_id):
     customer_data = Customer.objects.get(pk= customer_id)
     customer_data.date_of_last_pickup = date.today()
     customer_data.balance = (customer_data.balance + 20)
+    customer_data.one_time_pickup = None
     customer_data.save()
     return HttpResponseRedirect(reverse('employees:index'))
     if request.method == "GET":
         return render(request, 'employees:index')
-    
+        
