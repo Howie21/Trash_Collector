@@ -4,18 +4,28 @@
 
 {% block content %}
 <div>
-    {%if request.method == 'POST'%}
-        <header>Filtered Date selected</header>
+        <header>Filtered Day selected: {{ weekday }}</header>
         <br>
-        <h2>Pickups for the Selected Date:</h2>
-        <br>
-    {%else%}
-        <h3>Please select a Filter</h3> <br>
-        <form method='post'action="{% url 'employees:filter'%}">
-        {% csrf_token %}
-        Name: <input type = 'date' name='date_select' id='date' value='{{today}}'><br />
-        <input type ='submit' value='Load'> 
-        </form>
-    {% endif %}
+        <h3>Please select a Day of the Week</h3> <br>
+        <form action="{% url 'employees:filter' %}" method="post">
+            {% csrf_token %}
+            <select name='weekday' id='weekday' placeholder="{{weekday}}">
+                <option value='Monday'>Monday</option>
+                <option value='Tuesday'>Tuesday</option>
+                <option value='Wednesday'>Wednesday</option>
+                <option value='Thursday'>Thursday</option>
+                <option value='Friday'>Friday</option>
+                <option value='Saturday'>Saturday</option>
+                <option value='Sunday'>Sunday</option>
+            </select>
+            <input type="submit" value="Load">
+        <h2>Pickups for the Selected Day:</h2>
+        {% for customer in customer_data %}
+            {% if customer.weekly_pickup == weekday %}
+                <h2>{{ customer.name }}</h2>
+                <p>{{ customer.address }}</p>
+            {% endif %}
+        {%endfor%} 
+        <br>   
 </div>
 {% endblock %}
