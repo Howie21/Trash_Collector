@@ -17,7 +17,7 @@
     <br>
     Weekly Pick Up's for Today: <br>
     {% for customer in customer_data %}
-      {% if customer.weekly_pickup == weekday %}
+      {% if customer.weekly_pickup == weekday and customer.date_of_last_pickup != today %}
         <div>
           <h2>Name: {{ customer.name }}</h2>
           <p>Address: {{ customer.address}}</p>
@@ -27,7 +27,7 @@
     {% endfor %}
     One time Pick Up's for Today: <br>
     {% for customer in customer_data %}
-        {% if customer.one_time_pickup == today%}
+        {% if customer.one_time_pickup == today and customer.date_of_last_pickup != today %}
         <div>
           <h2>Name: {{ customer.name }}</h2>
           <p>Address: {{ customer.address}}</p>
@@ -35,6 +35,13 @@
         </div>
         {% endif %}
     {% endfor %}
+    Non Suspended Accounts: <br>
+    {% for customer in customer_data  %}
+      <div>
+        <h2>Name: {{customer.name}}</h2>
+        <p>Address: {{customer.address}}</p>
+      </div>
+    {% endfor %}  
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
