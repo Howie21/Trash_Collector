@@ -1,0 +1,21 @@
+{% extends 'employees\employee_base.html' %}
+
+{% block title %}{% block header %} Filter Date {% endblock %}{% endblock %}
+
+{% block content %}
+<div>
+    {%if request.method == 'POST'%}
+        <header>Filtered Date selected</header>
+        <br>
+        <h2>Pickups for the Selected Date:</h2>
+        <br>
+    {%else%}
+        <h3>Please select a Filter</h3> <br>
+        <form method='post'action="{% url 'employees:filter'%}">
+        {% csrf_token %}
+        Name: <input type = 'date' name='date_select' id='date' value='{{today}}'><br />
+        <input type ='submit' value='Load'> 
+        </form>
+    {% endif %}
+</div>
+{% endblock %}
