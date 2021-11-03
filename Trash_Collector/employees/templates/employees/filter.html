@@ -1,15 +1,15 @@
 {% extends 'employees\employee_base.html' %}
 
-{% block title %}{% block header %} Filter Date {% endblock %}{% endblock %}
+{% block title %}{% block header %} <h2 class='text-primary'>Filter Date</h2> {% endblock %}{% endblock %}
 
 {% block content %}
 <div>
-        <header>Filtered Day selected: {{ weekday }}</header>
+        <header class='text-success'>Filtered Day selected: {{ weekday }}</header>
         <br>
-        <h3>Please select a Day of the Week</h3> <br>
+        <h3 class='text-primary'>Please select a Day of the Week</h3> <br>
         <form action="{% url 'employees:filter' %}" method="post">
             {% csrf_token %}
-            <select name='weekday' id='weekday' placeholder="{{weekday}}">
+            <select class='selectpicker' name='weekday' id='weekday' placeholder="{{weekday}}">
                 <option value='Monday'>Monday</option>
                 <option value='Tuesday'>Tuesday</option>
                 <option value='Wednesday'>Wednesday</option>
@@ -18,14 +18,19 @@
                 <option value='Saturday'>Saturday</option>
                 <option value='Sunday'>Sunday</option>
             </select>
-            <input type="submit" value="Load">
-        <h2>Pickups for the Selected Day:</h2>
+            <input class='btn btn-primary' type="submit" value="Load">
+        <h2 class='text-primary'>Pickups for the Selected Day:</h2>
+        <div class='row'>
         {% for customer in customer_data %}
             {% if customer.weekly_pickup == weekday %}
-                <h2>{{ customer.name }}</h2>
-                <p>{{ customer.address }}</p>
+            <div class='card col-4'>
+                <h3 class='card-header'>{{ customer.name }}</h3>
+                <p class='card-body'>Address: {{ customer.address}}</p>
+                <p class='card-footer'></p>
+            </div>
             {% endif %}
         {%endfor%} 
+        </div>
         <br>   
 </div>
 {% endblock %}
