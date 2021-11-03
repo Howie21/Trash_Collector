@@ -7,41 +7,24 @@
     Hello Employee {{ logged_in_employee.name }}! Your working in Zone: {{ logged_in_employee.zip_code}} <br />
     Todays date is {{ weekday }}, {{ today }} <br>
     {% if content_present == False %}
-      <h3>No Customers Today! Nice work!</h3>
-    {% else %}
-    {% for customer in customer_data %}
-        <li>Name: {{ customer.name }} </li>
-    {% endfor %}
+      <h3 class='row'>No Customers Today! Nice work!</h3>
     {% endif %}
     <br>
     <br>
-    Weekly Pick Up's for Today: <br>
+    <h2 class='text-primary'>Pick Up's for Today:</h2> <br>
+    <div class='row'>
     {% for customer in customer_data %}
       {% if customer.weekly_pickup == weekday and customer.date_of_last_pickup != today %}
-        <div>
-          <h2>Name: {{ customer.name }}</h2>
-          <p>Address: {{ customer.address}}</p>
-          <a href="{% url 'employees:confirm' customer.id %}">Confirm Pick Up</a>
+        <div class='card col-4'>
+          <h3 class='card-header'>{{ customer.name }}</h3>
+          <p class='card-body'>Address: {{ customer.address}}</p>
+          <div class='card-footer'>
+          <a class=' btn btn-primary' href="{% url 'employees:confirm' customer.id %}">Confirm Pick Up</a>
+          </div>
         </div>
       {% endif %}
     {% endfor %}
-    One time Pick Up's for Today: <br>
-    {% for customer in customer_data %}
-        {% if customer.one_time_pickup == today and customer.date_of_last_pickup != today %}
-        <div>
-          <h2>Name: {{ customer.name }}</h2>
-          <p>Address: {{ customer.address}}</p>
-          <a href="{% url 'employees:confirm' customer.id %}">Confirm Pick Up</a>
-        </div>
-        {% endif %}
-    {% endfor %}
-    Non Suspended Accounts: <br>
-    {% for customer in customer_data  %}
-      <div>
-        <h2>Name: {{customer.name}}</h2>
-        <p>Address: {{customer.address}}</p>
-      </div>
-    {% endfor %}  
+    </div>
   {% else %}
     <p>You are at the employee index, but you are not logged in.</p>
     <a href="{% url 'login' %}">Log In</a>
